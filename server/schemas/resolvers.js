@@ -6,7 +6,7 @@ const resolvers = {
   Query: {
     me: async (parent, args, context) => {
       if (context.user) {
-        const userData = await User.findOne({ })
+        const userData = await User.findOne({ _id: context.user._id })
           .select('-__v -password')
           .populate('books');
 
@@ -40,24 +40,22 @@ const resolvers = {
       const token = signToken(user);
       return { token, user };
     },
-    saveBook: async (
-      parent,
-      args,
-      context
-    ) => {
+    saveBook: async (parent, args, context) => {
       if (context.user) {
         const updatedUser = await User.findOneAndUpdate(
           { _id: context.user._id },
           {
-            $push: {
-              savedBooks: args.input
-            }
+            $addToSet: {
+              savedBooks: args.input,
+            },
           },
           { new: true }
         );
-        console.log("updateUser:", updatedUser);
+    
+        console.log("updatedUser:", updatedUser);
         return updatedUser;
       }
+      throw new AuthenticationError("Please log in!");
     },
     removeBook: async (parent, { bookId }, context) => {
       if (context.user) {
