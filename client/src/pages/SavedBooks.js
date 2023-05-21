@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
   Container,
   CardColumns,
+  Jumbotron,
   Card,
   Button,
 } from "react-bootstrap";
@@ -56,11 +57,11 @@ const SavedBooks = () => {
 
   return (
     <>
-      <div fluid className="text-light bg-dark">
+      <Jumbotron fluid className="text-light bg-dark">
         <Container>
           <h1>Viewing saved books!</h1>
         </Container>
-      </div>
+        </Jumbotron>
       <Container>
         <h2>
           {userData.savedBooks.length
